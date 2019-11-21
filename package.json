@@ -1,0 +1,27 @@
+{
+  "name": "json-dom",
+  "version": "1.0.0",
+  "description": "Parse and query a view hierarchy specified in JSON",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:dev": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexjball/json-dom.git"
+  },
+  "author": "Alex Ball",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexjball/json-dom/issues"
+  },
+  "homepage": "https://github.com/alexjball/json-dom#readme",
+  "jest": {
+    "transform": {}
+  },
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "yargs": "^15.0.2"
+  }
+}
