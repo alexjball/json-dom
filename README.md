@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/alexjball/json-dom.svg?branch=master)](https://travis-ci.com/alexjball/json-dom)
+
 # json-dom
 Parse and query a view hierarchy specified in json
 
