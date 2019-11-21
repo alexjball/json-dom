@@ -15,7 +15,7 @@ const simpleDom = {
       },
       {
         class: "GridView"
-      },
+      }
     ]
   },
   simpleDomString = JSON.stringify(simpleDom);
@@ -55,9 +55,23 @@ describe("JsonDom", () => {
     ]);
   });
 
-  it("rejects chaining selector", () => {
+  it("matches chaining selector", () => {
     const dom = JsonDom.parse(simpleDomString);
-    expect(() => dom.matchSelector("StackView container2")).toThrow();
+    expect(dom.matchSelector("#System .container2")).toEqual([
+      simpleDom.subviews[1]
+    ]);
+    expect(dom.matchSelector("StackView ImageView")).toEqual([
+      simpleDom.subviews[0].subviews[0]
+    ]);
+  });
+
+  it("matches complex selector", () => {
+    const dom = JsonDom.parse(simpleDomString);
+    expect(
+      dom.matchSelector(
+        "#System .container2, #System StackView.container ImageView"
+      )
+    ).toEqual([simpleDom.subviews[1], simpleDom.subviews[0].subviews[0]]);
   });
 
   it("matches full dom", () => {
