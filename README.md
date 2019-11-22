@@ -7,9 +7,11 @@ Parse and query a view hierarchy specified in json
 
 # Usage
 
+Install Node v10+
+
 ```
 git clone https://github.com/alexjball/json-dom.git
 cd json-dom
 npm install
-./cli.js
+./cli.js --file SystemViewController.json
 ```
