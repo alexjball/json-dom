@@ -70,15 +70,16 @@ module.exports = class JsonDom {
    *    [[{classNames: [String], identifier: String, viewClass: String}, ...], ...]
    */
   static _parseRule(rule) {
-    const compoundSelectorRe = /(?<viewClass>[\w]+)?(?<classNames>(?:\.[\w\-]*)*)(?:#(?<identifier>[\w\-]+))?/;
+    // Matches (ViewClass)?(.className)*(#identifier)? and captures the view class,
+    // all CSS class names, and identifier.
+    const compoundSelectorRe = /([\w]+)?((?:\.[\w\-]*)*)(?:#([\w\-]+))?/;
     return rule.split(",").map(clause =>
       clause
         .trim()
         .split(" ")
         .map(compoundSelectorString => {
-          const {
-            groups: { classNames, identifier, viewClass }
-          } = compoundSelectorString.match(compoundSelectorRe);
+          const [matched, viewClass, classNames, identifier] =
+            compoundSelectorString.match(compoundSelectorRe) || [];
 
           const compoundSelector = {};
           if (classNames) {
@@ -102,7 +103,7 @@ module.exports = class JsonDom {
    * The string should consist of comma separate compound, chained selectors. All
    * views that match at least one selector are returned.
    *
-   * Each compound selector has the form (((ViewClass)?(.className)*(#identifier)?.
+   * Each compound selector has the form "(ViewClass)?(.className)*(#identifier)?".
    *
    * Ex: "Input", "StackView.column, StackView Box, VideoModeSelect#videoMode"
    */
