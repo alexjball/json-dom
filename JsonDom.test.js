@@ -47,6 +47,15 @@ describe("JsonDom", () => {
     ]);
   });
 
+  it("rejects invalid compound selectors", () => {
+    const dom = JsonDom.parse(simpleDomString);
+    expect(() => dom.matchSelector("@!%$")).toThrow(SyntaxError);
+    expect(() => dom.matchSelector("")).toThrow(SyntaxError);
+    expect(() =>
+      dom.matchSelector("StackView.container2, GridView#Id!@!")
+    ).toThrow(SyntaxError);
+  });
+
   it("matches combining selector", () => {
     const dom = JsonDom.parse(simpleDomString);
     expect(dom.matchSelector("StackView.container2, GridView ")).toEqual([

@@ -24,7 +24,11 @@ const repl = () => {
       console.log(`Matched ${matchedViews.length} views`);
       console.log(matchedViews);
     } catch (e) {
-      console.error("Couldn't match selector", e);
+      if (e instanceof SyntaxError) {
+        console.error(e.message);
+      } else {
+        console.error("Couldn't match selector", e);
+      }
     }
     repl();
   });

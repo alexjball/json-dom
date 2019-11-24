@@ -68,11 +68,12 @@ module.exports = class JsonDom {
    *
    * @return an array of chained, compound selector objects:
    *    [[{classNames: [String], identifier: String, viewClass: String}, ...], ...]
+   * @throws SyntaxError if the rule could not be parsed.
    */
   static _parseRule(rule) {
     // Matches (ViewClass)?(.className)*(#identifier)? and captures the view class,
     // all CSS class names, and identifier.
-    const compoundSelectorRe = /([\w]+)?((?:\.[\w\-]*)*)(?:#([\w\-]+))?/;
+    const compoundSelectorRe = /^([\w]+)?((?:\.[\w\-]*)*)(?:#([\w\-]+))?$/;
     return rule.split(",").map(clause =>
       clause
         .trim()
@@ -80,6 +81,14 @@ module.exports = class JsonDom {
         .map(compoundSelectorString => {
           const [matched, viewClass, classNames, identifier] =
             compoundSelectorString.match(compoundSelectorRe) || [];
+
+          if (!matched) {
+            throw SyntaxError(
+              `Invalid rule "${rule}"` +
+                "\nExpected (ViewClass)?(.className)*(#identifier)?" +
+                "\nAllowed characters: A-z, 0-9, _, -"
+            );
+          }
 
           const compoundSelector = {};
           if (classNames) {
@@ -106,6 +115,9 @@ module.exports = class JsonDom {
    * Each compound selector has the form "(ViewClass)?(.className)*(#identifier)?".
    *
    * Ex: "Input", "StackView.column, StackView Box, VideoModeSelect#videoMode"
+   *
+   * @returns An array of matched views. The array should not be modified.
+   * @throws SyntaxError if the rule can't be parsed.
    */
   matchSelector(selectorRule) {
     const rule = JsonDom._parseRule(selectorRule);
